@@ -35,7 +35,7 @@ export class BucketSize {
   }
 
   public parse(spec: string) {
-    const match = String(spec).match(BucketSize.regex)
+    const match = spec.match(BucketSize.regex)
     if (!match) throw new Error('invalid bucket size spec: ' + spec)
     if (!match[1]) match[1] = '1'
 
@@ -53,6 +53,10 @@ export class BucketSize {
 
   public toString() {
     return this.value === 1 ? this.granularity : this.spec
+  }
+
+  public equals(other: BucketSize) {
+    return this.value == other.value && this.granularity == other.granularity
   }
 
   public pack() {

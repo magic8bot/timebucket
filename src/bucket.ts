@@ -38,14 +38,23 @@ export class Bucket {
     return this.size.toMilliseconds() * this.value
   }
 
+  public getEndOfBucketMS() {
+    return this.toMilliseconds() + this.size.toMilliseconds()
+  }
+
   public toDate() {
     return new Date(this.toMilliseconds())
   }
 
+  public getEndOfBucketDate() {
+    return new Date(this.getEndOfBucketMS())
+  }
+
   public resize(spec) {
     const size = new BucketSize(spec)
-    if (size.granularity === this.size.granularity && size.value === this.size.value) return this
-
+    if (this.size.equals(size)) {
+      return this
+    }
     const value = Math.floor(this.toMilliseconds() / size.toMilliseconds())
     return new Bucket(size.spec, value)
   }
